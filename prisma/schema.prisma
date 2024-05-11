@@ -27,3 +27,90 @@ model User {
   state     Boolean  @default(true)
   createdAt DateTime @default(now())
 }
+
+model Categories {
+  id        Int        @id @default(autoincrement())
+  name      String     @db.VarChar(120)
+  is_active Int        @default(1)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @default(now()) @updatedAt
+  deletedAt DateTime?
+  Products  Products[]
+}
+
+model Clients {
+  id           Int        @id @default(autoincrement())
+  cc_nit       String     @unique @db.VarChar(20)
+  name         String     @db.VarChar(120)
+  cell_phone   String?    @db.VarChar(60)
+  phone        String?    @db.VarChar(60)
+  email        String?    @db.VarChar(60)
+  address      String?    @db.VarChar(200)
+  city         String?    @db.VarChar(200)
+  observations String?    @db.VarChar(200)
+  is_active    Int        @default(1)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @default(now()) @updatedAt
+  deletedAt    DateTime?
+  PosDetal     PosDetal[]
+}
+
+model Colors {
+  id        Int        @id @default(autoincrement())
+  name      String
+  is_active Int        @default(1)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @default(now()) @updatedAt
+  deletedAt DateTime?
+  Products  Products[]
+}
+
+model Brands {
+  id        Int        @id @default(autoincrement())
+  name      String
+  is_active Int        @default(1)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @default(now()) @updatedAt
+  deletedAt DateTime?
+  Products  Products[]
+}
+
+model Products {
+  id              Int        @id @default(autoincrement())
+  name            String
+  bar_code        String
+  brand           Brands     @relation(fields: [brand_id], references: [id])
+  brand_id        Int
+  size_id         Int
+  flavour_id      Int
+  color           Colors     @relation(fields: [color_id], references: [id])
+  color_id        Int
+  grams           String
+  milliliters     String
+  category        Categories @relation(fields: [category_id], references: [id])
+  category_id     Int
+  provider_id     Int
+  cost            Float
+  retail_price    Float
+  wholesale_price Float
+  reference_price Float
+  image_url       String
+  is_active       Int        @default(1)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @default(now()) @updatedAt
+  deletedAt       DateTime?
+  PosDetal        PosDetal[]
+}
+
+model PosDetal {
+  quantity           Int
+  retail_price       Float
+  product            Products @relation(fields: [product_id], references: [id])
+  product_id         Int
+  client             Clients  @relation(fields: [client_id], references: [id])
+  client_id          Int
+  user_id            Int
+  concurrent_selling Int      @default(1)
+  date               DateTime @default(now())
+  id                 String   @id @default(uuid()) @db.VarChar(36)
+}
