@@ -5,7 +5,7 @@ async function loadtesks() {
   return await prisma.task.findMany();
 }
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   const tasks = await loadtesks();
