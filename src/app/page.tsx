@@ -1,5 +1,5 @@
 import { TaskCard } from "@/components/TaskCard";
-import { prisma } from "@/libs/prisma";
+import prisma from "@/libs/prisma";
 
 async function loadtesks() {
   return await prisma.task.findMany();
